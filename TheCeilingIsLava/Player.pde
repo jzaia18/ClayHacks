@@ -49,8 +49,13 @@ class Player {
 
   void display() {
     fill(0, 100, 160);
-    //    rectMode(CENTER);
-    //  rect(x, y, hitbox, hitbox);
+    if (System.currentTimeMillis() - startInvulnTime < 4000) {
+      if ((System.currentTimeMillis() - startInvulnTime)%500< 250)
+        tint(255, 120);
+      else
+        tint(255, 255);
+    }
     image(sadice, x - hitbox/2, y - hitbox/2);
+    tint(255, 255);
   }
 }

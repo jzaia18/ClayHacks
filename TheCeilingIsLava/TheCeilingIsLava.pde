@@ -27,8 +27,9 @@ void draw() { //happens 60 times per second
       spawnPlatPair();
       lastSpawn = System.currentTimeMillis();
     }
+    displayScore();
   } else {
-   displayMainMenu(); 
+    displayMainMenu();
   }
 }
 
@@ -61,5 +62,10 @@ void displayMainMenu() {
   rectMode(CENTER);
   fill(12);
   rect(width/2, 3*height/7, width/3, height/10);
-  
+}
+
+void displayScore() {
+  textSize(30);
+  fill(255);
+  text("Score: " + (int)(System.currentTimeMillis()-startTime)/13, width - 220, height - 20);
 }
