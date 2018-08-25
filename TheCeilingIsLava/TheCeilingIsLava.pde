@@ -2,24 +2,33 @@ Player player;
 ArrayList<Platform> platforms;
 long startTime, lastSpawn;
 Lava lava;
+PImage bkgd;
+boolean gameStarted = true;
 
 void setup() { //happens once at the beginning
   size(600, 900);
+  bkgd = loadImage("bkgd.png");
   player = new Player();
   platforms = new ArrayList<Platform>();
   lava = new Lava();
+
   startTime = lastSpawn = System.currentTimeMillis();
   spawnPlatPair();
 }
 
 void draw() { //happens 60 times per second
-  background(255);
-  updatePlatforms();
-  lava.update();
-  player.update(platforms, lava.y);
-  if ((System.currentTimeMillis() - lastSpawn)/1000  >= 3) { //spawn every 3 secs
-   spawnPlatPair();
-   lastSpawn = System.currentTimeMillis();
+  background(bkgd);
+
+  if (gameStarted) {
+    updatePlatforms();
+    lava.update();
+    player.update(platforms, lava);
+    if ((System.currentTimeMillis() - lastSpawn)/1000  >= (3/((System.currentTimeMillis() - startTime)/15000 + 1) + 1)) {
+      spawnPlatPair();
+      lastSpawn = System.currentTimeMillis();
+    }
+  } else {
+   displayMainMenu(); 
   }
 }
 
@@ -36,15 +45,21 @@ void updatePlatforms() {
     if (curr.y < 0) {
       platforms.remove(i);
       i--;
-    }
-    else
-      curr.update();
+    } else
+      curr.update(lava.y);
   }
 }
 
 void spawnPlatPair() { //spawns 2 platforms with a gap
   float gapSize = 120/((System.currentTimeMillis() - startTime)/30000 + 1) + 60;
-  float gapX = 160 + random(width - 320);
-  platforms.add(new Platform(0, 900, gapX));
-  platforms.add(new Platform(gapX + gapSize, 900, width));
+  float gapX = 160 + random(width - 360);
+  platforms.add(new Platform(0, 900, gapX, true));
+  platforms.add(new Platform(gapX + gapSize, 900, width, false));
+}
+
+void displayMainMenu() {
+  rectMode(CENTER);
+  fill(12);
+  rect(width/2, 3*height/7, width/3, height/10);
+  
 }
