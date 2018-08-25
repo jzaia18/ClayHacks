@@ -2,6 +2,7 @@ class Player {
   float x, y, dx, dy;
   float hitbox;
   boolean secondWind;
+  boolean gameover;
   long startInvulnTime;
   PImage sadice = loadImage("sadice.png");
 
@@ -10,7 +11,7 @@ class Player {
     y = height/3;
     hitbox = 35;
     dy = 3;
-    secondWind = false;
+    secondWind = gameover = false;
   }
 
   void update(ArrayList<Platform> platforms, Lava lava) {
@@ -37,10 +38,11 @@ class Player {
     if (y - hitbox/2 < lava.y) {
       if (!secondWind) {
         secondWind = true;
+        sadice = loadImage("marsh.png");
         lava.y = 25;
         startInvulnTime = System.currentTimeMillis();
       } else if (System.currentTimeMillis() - startInvulnTime > 4000) {
-        stop();
+        gameover = true;
       }
     }
 
