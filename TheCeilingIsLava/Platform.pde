@@ -1,12 +1,14 @@
 class Platform {
- float x, y, dy;
+ float x, x2, y, dy;
  float w, h;
   
- Platform() {
-   x = 400;
-   y = 400;
-   w = 200;
-   h = 25;
+ Platform(float x, float y, float x2) { 
+   this.x = x;
+   this.y = y;
+   this.x2 = x2;
+   this.w = x2 - x;
+   this.h = 25;
+   this.dy = -3;
  };
  
  void update() {
@@ -15,10 +17,12 @@ class Platform {
  }
  
  void move() {
+   y += dy;
  }
  
  void display() {
-   rectMode(CENTER);
-   rect(x, y, w, h);
+   rectMode(CORNERS);
+   fill(150);
+   rect(x, y, x2, y + h);
  }
 }
